@@ -1,0 +1,17 @@
+<%- include('header') %>
+
+<form action="/chat" method="POST">
+    <label for="nickname">Név:</label>
+    <input type="text" name="nickname" class="form-control mb-2" placeholder="Add meg a nevedet...">
+    <label for="nickname">Szobanév:</label>
+    <select name="" class="form-control mb-2">
+        <option value="Main">Előszoba</option>
+        <option value="Frontend">Frontend programozás</option>
+        <option value="Backend">Backend programozás</option>
+        <option value="Desktop">Asztali és mobilalkalmazások fejlesztése</option>
+        <option value="Web">Web programozás</option>
+    </select>
+    <button class="btn btn-primary">Belépés a szobába</button>
+</form>
+
+<%- include('footer') %>

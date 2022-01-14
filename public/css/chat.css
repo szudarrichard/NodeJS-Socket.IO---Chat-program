@@ -1,0 +1,34 @@
+/*Úgy editeled ahogy akarod, csak azért editeltem, hogy 
+átlássam mi hogy van*/
+
+body{
+    background-color: silver;
+}
+.container{
+    background-color: white;
+    box-shadow: 0 0 15px gray;
+    margin: 50px auto;
+    padding: 15px;
+}
+
+header{
+    background-color: slategray;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 5px black;
+}
+
+main{
+    padding: 20px;
+}
+
+footer{
+    background-color: black;
+    color:white;
+    text-align: center;
+    font-size: 85%;
+    padding: 10px;
+    letter-spacing: 3px;
+}
