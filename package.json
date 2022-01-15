@@ -21,6 +21,7 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "socket.io": "^4.4.1"
   },
   "devDependencies": {
