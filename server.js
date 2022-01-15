@@ -3,7 +3,8 @@ const express = require('express');
 var session = require('express-session');
 const ejs = require('ejs');
 const socketio = require('socket.io');
-const {joinUser, getRoomUsers} = require('./user/users.js');
+const {joinUser, getRoomUsers, userLeave} = require('./user/users.js');
+const {formatMessage} = require('./user/messages.js');
 const app = express();
 const server = http.createServer(app);
 const port = 3000;
@@ -34,7 +35,22 @@ io.on('connection', (socket)=>{
     socket.on('JoinToRoom', ()=>{
         const user = joinUser(socket.id, session.nickname, session.roomname);
         io.emit('updateRoom', session.roomname, getRoomUsers(session.roomname));
+
+        //Üdvözli az éppen belépő embert
+        socket.emit('message', formatMessage('System', 'Üdv a szobában!'));
+
+        //Megjeleníti ki lépett be a szobába mindenkinek(kivéve aki belépett)
+        socket.broadcast.emit('message', formatMessage('System', 'Felhasználó belépett a szobába!'));
     });
+
+    //Client left the room
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id);
+        //Frissítjük a szoba információt (ki jelentkezett ki)
+        io.emit('updateRoom', user.room, getRoomUsers(user.room));
+
+    })
+
 });
 
 server.listen(port, () => {

@@ -12,13 +12,18 @@ socket.on('updateRoom', (room, users)=>{
     outputUserList(users);
 });
 
+socket.on('message',(msg)=>{
+    console.log(msg);
+})
+
 //Beleírja a szobanevet a chatbe hogy melyikbe lépett be és ki
 function outputRoomName(room){
     roomname.innerHTML = room;
 }
 
 
-//
+//Beírja a szobában tartózkodó embereket az ul-en belülre
+//li-be
 function outputUserList(users){
     userslist.innerHTML = '';
     users.forEach(user => {
