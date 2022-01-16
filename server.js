@@ -39,8 +39,8 @@ io.on('connection', (socket)=>{
         //Üdvözli az éppen belépő embert
         socket.emit('message', formatMessage('System', `Üdv a ${user.room} szobában.`));
 
-        //Megjeleníti ki lépett be a szobába mindenkinek(kivéve aki belépett)
-        socket.broadcast.emit('message', formatMessage('System', `${user.name} belépett a szobába!`));
+        //Megjeleníti ki lépett be a és melyik szobába mindenkinek(kivéve aki belépett)
+        socket.broadcast.emit('message', formatMessage('System', `${user.name} belépett a ${user.room} szobába!`));
     });
 
     //Megkapja az üzenetet
