@@ -1,6 +1,9 @@
 let socket = io();
 let roomname = document.querySelector('#roomname');
 let userslist = document.querySelector('#userslist');
+let chatMessages = document.querySelector('.chat-messages');
+let msgTxt = document.querySelector('msgTxt');
+let sendBtn = document.querySelector('#sendBtn');
  
 
 //Kliens csatlakozott a szerverhez
@@ -11,15 +14,27 @@ socket.on('updateRoom', (room, users)=>{
     outputRoomName(room);
     outputUserList(users);
 });
-
+//Üzenet fogadása
 socket.on('message',(msg)=>{
-    console.log(msg);
+    outputMessages(msg);
 })
+//Üzenet elküldése
+document.addEventListener('click',()=>{
+    let msg = msgTxt.value;
+    if(msg != '')
+    {
+        socket.emit('message', msg);
+        msgTxt.value = '';
+        msgTxt.focus();
+    }
+
+});
+
 
 //Beleírja a szobanevet a chatbe hogy melyikbe lépett be és ki
 function outputRoomName(room){
     roomname.innerHTML = room;
-}
+};
 
 
 //Beírja a szobában tartózkodó embereket az ul-en belülre
@@ -32,4 +47,19 @@ function outputUserList(users){
         userslist.appendChild(li);
 
     });
+}
+
+// Beírja a chatbe az üzeneteket (ki lépett be)
+function outputMessages(message){
+    const div = document.createElement('div');
+    div.classList.add('message');
+    const p = document.createElement('p');
+    p.classList.add('uname');
+    p.innerText = message.username;
+    p.innerHTML += `<span>${message.time}</span>`
+    div.appendChild(p);
+    const p2 = document.createElement('p');
+    p2.innerText = message.text;
+    div.appendChild(p2);
+    chatMessages.appendChild(div);
 }

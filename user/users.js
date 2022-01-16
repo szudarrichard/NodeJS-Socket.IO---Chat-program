@@ -4,7 +4,12 @@ const users = [];
 function joinUser(id, name, room){
     const user = {id, name, room};
     users.push(user);
-    return users;
+    return user;
+}
+
+//Jelenlegi személy lekérése
+function getCurrentUser(id){
+    return users.find(user => user.id === id);
 }
 
 //Minden felhasználó kiírása a szobában
@@ -25,5 +30,6 @@ function userLeave(id){
 module.exports = {
     joinUser,
     getRoomUsers,
-    userLeave
+    userLeave,
+    getCurrentUser
 }
