@@ -2,7 +2,7 @@ let socket = io();
 let roomname = document.querySelector('#roomname');
 let userslist = document.querySelector('#userslist');
 let chatMessages = document.querySelector('.chat-messages');
-let msgTxt = document.querySelector('msgTxt');
+let msgTxt = document.getElementById('msgTxt');
 let sendBtn = document.querySelector('#sendBtn');
 
 //Kliens csatlakozott a szerverhez
@@ -24,6 +24,7 @@ document.addEventListener('click',()=>{
     let msg = msgTxt.value;
     if(msg != '')
     {
+        
         socket.emit('message', msg);
         msgTxt.value = '';
         msgTxt.focus();
