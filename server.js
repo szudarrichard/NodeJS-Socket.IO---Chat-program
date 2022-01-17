@@ -48,6 +48,7 @@ io.on('connection', (socket)=>{
         const user = getCurrentUser(socket.id);
         //Megjeleníti a többi embernek a szobában az üzenetet
         socket.broadcast.emit('message', formatMessage(user.name, msg));
+        socket.emit('message', formatMessage(user.name, msg));
     });
 
 
