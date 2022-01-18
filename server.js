@@ -34,29 +34,37 @@ io.on('connection', (socket)=>{
     //Client connected to room
     socket.on('JoinToRoom', ()=>{
         const user = joinUser(socket.id, session.nickname, session.roomname);
-        io.emit('updateRoom', session.roomname, getRoomUsers(session.roomname));
+        //Belépés a szobába
+        socket.join(user.room);
+
+
+        //Frissíti a szoba információt
+        io.to(user.room).emit('updateRoom', session.roomname, getRoomUsers(session.roomname));
 
         //Üdvözli az éppen belépő embert
         socket.emit('message', formatMessage('System', `Üdv a ${user.room} szobában.`));
 
         //Megjeleníti ki lépett be a és melyik szobába mindenkinek(kivéve aki belépett)
-        socket.broadcast.emit('message', formatMessage('System', `${user.name} belépett a ${user.room} szobába!`));
+        socket.broadcast.to(user.room).emit('message', formatMessage('System', `${user.name} belépett a  szobába!`));
     });
 
     //Megkapja az üzenetet
     socket.on('message',(msg)=>{
         const user = getCurrentUser(socket.id);
         //Megjeleníti a többi embernek a szobában az üzenetet
-        socket.broadcast.emit('message', formatMessage(user.name, msg));
-        socket.emit('message', formatMessage(user.name, msg));
+        socket.broadcast.to(user.room).emit('message', formatMessage(user.name, msg));
     });
 
 
     //Kilépés a szobából
     socket.on('disconnect', () => {
         const user = userLeave(socket.id);
+
+        //Kiíratjuk, hogy ki lépett ki a szobából
+        io.to(user.room).emit('message',formatMessage('System', `${user.name} kilépett a szobából!`));
+
         //Frissítjük a szoba információt (ki jelentkezett ki)
-        io.emit('updateRoom', user.room, getRoomUsers(user.room));
+        io.to(user.room).emit('updateRoom', user.room, getRoomUsers(user.room));
 
     });
 
