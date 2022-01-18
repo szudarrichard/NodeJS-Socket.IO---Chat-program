@@ -1,6 +1,8 @@
 const http = require('http');
 const express = require('express');
 var session = require('express-session');
+const path = require('path');
+const mysql = require('mysql');
 const ejs = require('ejs');
 const socketio = require('socket.io');
 const {joinUser, getRoomUsers, userLeave, getCurrentUser} = require('./user/users.js');
@@ -9,6 +11,23 @@ const app = express();
 const server = http.createServer(app);
 const port = 3000;
 const io = socketio(server);
+
+//MySql kapcsolat
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: "root",
+    password: "123456789",
+    database: "214_SZFT_SZRKKG_chat"
+});
+
+connection.connect((err) => {
+    if(err) {
+        console.log(err);
+    }
+    else {
+        console.log('Connection success...');
+    }
+});
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -23,7 +42,6 @@ app.get('/', (req,res) => {
     res.render('index');
 });
 
-
 app.post('/chat', (req, res)=> {
     session.nickname = req.body.nickname;
     session.roomname = req.body.room;
@@ -36,7 +54,6 @@ io.on('connection', (socket)=>{
         const user = joinUser(socket.id, session.nickname, session.roomname);
         //Belépés a szobába
         socket.join(user.room);
-
 
         //Frissíti a szoba információt
         io.to(user.room).emit('updateRoom', session.roomname, getRoomUsers(session.roomname));
@@ -54,7 +71,6 @@ io.on('connection', (socket)=>{
         //Megjeleníti a többi embernek a szobában az üzenetet
         socket.broadcast.to(user.room).emit('message', formatMessage(user.name, msg));
     });
-
 
     //Kilépés a szobából
     socket.on('disconnect', () => {
