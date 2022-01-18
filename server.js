@@ -15,9 +15,9 @@ const io = socketio(server);
 //MySql kapcsolat
 var connection = mysql.createConnection({
     host: 'localhost',
-    user: "root",
-    password: "123456789",
-    database: "214_SZFT_SZRKKG_chat"
+    user: '214_SZFT_KKG',
+    password: '123456789',
+    database: '214_SZFT_SZRKKG_chat'
 });
 
 connection.connect((err) => {
