@@ -24,7 +24,6 @@ document.addEventListener('click',()=>{
     let msg = msgTxt.value;
     if(msg != '')
     {
-        
         socket.emit('message', msg);
         msgTxt.value = '';
         msgTxt.focus();

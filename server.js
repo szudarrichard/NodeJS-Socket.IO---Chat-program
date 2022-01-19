@@ -42,6 +42,24 @@ app.get('/', (req,res) => {
     res.render('index');
 });
 
+//Belépés és regisztráció
+app.get('/login', (req,res) => {
+    res.render('login');
+});
+
+app.post('/login', (req,res) => {
+    
+});
+
+app.get('/register', (req,res) => {
+    res.render('register');
+});
+
+app.get('/register', (req,res) => {
+    
+});
+
+//Chat start
 app.post('/chat', (req, res)=> {
     session.nickname = req.body.nickname;
     session.roomname = req.body.room;
