@@ -15,9 +15,9 @@ const io = socketio(server);
 //MySql kapcsolat
 var connection = mysql.createConnection({
     host: 'localhost',
-    user: '214_SZFT_KKG',
-    password: '123456789',
-    database: '214_SZFT_SZRKKG_chat'
+    user: 'SZR',
+    password: '123456',
+    database: '214szft_chat'
 });
 
 connection.connect((err) => {
@@ -48,15 +48,61 @@ app.get('/login', (req,res) => {
 });
 
 app.post('/login', (req,res) => {
-    
+    var email = req.body.email;
+    var pw = req.body.password;
+
+    if (email == "" || pw == "") {
+        ejs.renderFile("views/login.ejs", {hiba:"Adja meg a kötelező adatokat!"}, (err, data)=>{
+            if (err) {
+                console.log(err)
+            }
+            else{
+                res.send(data);
+            }
+        })
+    }
+    else{
+    connection.query(`SELECT * FROM users WHERE email = '${email}' AND passwd='${pw}'`, (err, data)=>{
+            if (err) {
+                console.log("hiba");
+            }
+            else{
+                res.redirect("/");
+            }
+        });
+    }
 });
 
 app.get('/register', (req,res) => {
     res.render('register');
 });
 
-app.get('/register', (req,res) => {
-    
+app.post('/register', (req,res) => {
+    var nev = req.body.name;
+    var email = req.body.email;
+    var pw1 = req.body.password;
+    var pw2 = req.body.password2;
+
+    if (nev == "" || email == "" || pw1 == "" || pw2 == "") {
+        ejs.renderFile("views/register.ejs", {hiba:"Adja meg a kötelező adatokat!"}, (err, data)=>{
+            if (err) {
+                console.log(err)
+            }
+            else{
+                res.send(data);
+            }
+        })
+    }
+    else{
+        connection.query(`INSERT INTO users VALUES(null, '${nev}', '${email}', '${pw1}')`, (err, data)=>{
+            if (err) {
+                console.log("hiba");
+            }
+            else{
+                res.redirect("/login");
+            }
+        });
+    }
 });
 
 //Chat start
