@@ -67,7 +67,15 @@ app.post('/login', (req,res) => {
                 console.log("hiba");
             }
             else{
-                res.redirect("/");
+                if(data.length!=0)
+                {
+                    res.redirect("/");
+                }
+                else
+                {
+                    console.log('rossz adat');
+                }
+                
             }
         });
     }
